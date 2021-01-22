@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+    <head lang="uk">
+        <meta charset="UTF-8">
+        <title></title>
+      <link rel="stylesheet" type="text/css" href="main.css">
+    </head>
+    
+<body>
+    <div class="box">
+        <div class="containerOne">
+      <form id="add-form" >
+        
+   <label ><input id = "item-name" type="text"  placeholder=" Назва товару"> </label>
+       
+        <button type="submit"  class="button tooltip" data-tooltip="Додати продукт до кошика"> Додати </button>
+         
+    </form>
+
+  <ul id="ItemList">
+    <!--Cart Iems-->
+    
+    
+    </ul>
+        
+    </div>
+        <div class="containerTwo">
+          <div class="Zal" ><h1 class="leftList">
+    Залишилось
+            </h1></div>
+    <ul id="LeftToBuyList" >   </ul>
+    
+    <div class="Kupleno"><h2 class="BoughtListOfProduct"> Куплено
+    </h2></div>
+     <ul id="boughtList" >   </ul>
+            </div>
+        </div>
+ <div class="badge">
+     <h>BuyList</h>
+    <p>
+        <i>Created by:</i><br>
+        Varvara Toloknova
+                          </p>
+    <script>
+//------------begining of script----------------------------------------
+        
+    const itemList = document.getElementById('ItemList');
+    const addForm = document.getElementById('add-form');
+    const itemName = document.getElementById('item-name');
+    const leftToBuyList= document.getElementById('LeftToBuyList');
+    const BoughtList= document.getElementById('boughtList');
+    
+    const cart = [];
+//--------------Handle clicks on List------------------------------------
+        itemList.onclick= function(e){
+            if(e.target &&  e.target.classList.contains('removeAll')){
+                const name= e.target.dataset.name;  //data-name!!!
+                removeItem(name);
+                
+               }
+              else if(e.target &&  e.target.classList.contains('add-one')){
+                const name= e.target.dataset.name;  //data-name!!!
+                addItem(name);
+                
+               }
+            else   if(e.target &&  e.target.classList.contains('remove-one')){
+                const name= e.target.dataset.name;  //data-name!!!
+                MinusOneInQty(name);
+                
+               }
+             else   if(e.target &&  e.target.classList.contains('purchased')){
+                const name= e.target.dataset.name;  //data-name!!!
+                purchasedItem(name);
+                 showBoughtItems();
+                
+               }
+            else   if(e.target &&  e.target.classList.contains('notPurchased')){
+                const name= e.target.dataset.name;  //data-name!!!
+                notPurchasedItem(name);
+                showBoughtItems();
+               }
+            
+        }
+// --------------handle add form submit----------------------------------
+        addForm.onsubmit = function(e){
+            e.preventDefault();
+            const name = itemName.value;
+           addItem(name);
+            //showItems();
+        }
+        
+//-----------------Add Item----------------------------------------------
+        function addItem(name){
+            for(let i=0; i< cart.length; i +=1){
+                if(cart[i].name === name){
+                   cart[i].qty++;
+                     showItems();
+                    showLeftItems();
+                    return;
+                   }
+              
+            }
+            const item = { name, qty: 1, sold: false};
+                    cart.push(item);
+            showItems();
+            showLeftItems();
+            return;
+                
+        }
+
+
+//----------- SHow Items-------------------------------------------------
+        function showItems(){
+            
+            let itemStr = '';
+            for(let i=0; i<cart.length; i+=1){
+              if(cart[i].sold===false){
+                const {name,  qty} = cart[i];
+                itemStr+=`<li>
+<div class="l"> ${name }</div>
+<div class="c"><button class="tooltip remove-one"  data-tooltip="Зменшити" data-name = "${name}"> - </button>
+<label class="numberCell">${qty} </label>
+<button class=" tooltip add-one"  data-tooltip="Збільшити" data-name = "${name}"> + </button></div>
+<div class="r"><button class = "tooltip purchased" data-tooltip="Відмітити як куплене" data-name= "${name}" > Куплено  </button >
+<button class = "tooltip removeAll" data-tooltip="Видалити зі списку" data-name= "${name}" > x </button ></span ></div>
+        </li>`
+            
+            }
+            if(cart[i].sold===true){
+                const {name,  qty} = cart[i];
+                itemStr+=`<li>
+<div class="l"><label class="strikethroughText"> ${name }</label></div>
+<label class="numberCell">${qty} </label>
+<div class="r"><button class = "tooltip notPurchased"  data-tooltip="Повернути товар до списку" data-name= "${name}" > Не куплено  </button ></div>
+        </li>`
+            }
+        }
+            itemList.innerHTML = itemStr;
+            
+        }
+//-------------Remove Items----------------------------------------------
+    function removeItem(name){    
+        for(let i=0; i < cart.length; i+=1){
+            if (cart[i].name === name){
+                cart.splice(i,1);
+                showItems();
+                showLeftItems();
+                return;
+            }
+           
+        }
+        
+    }
+//---------------minus one in quantity of product -----------------------
+        function MinusOneInQty(name){
+             for(let i=0; i < cart.length; i+=1){
+            if (cart[i].name === name){
+                cart[i].qty-=1;
+                if(cart[i].qty <1){
+                    cart[i].qty =1;
+                }
+                showItems();
+                showLeftItems()
+                return;
+            }
+           
+        }
+        }
+//---------------------show purchased goods------------------------------
+        function purchasedItem(name){
+           
+              for(let i=0; i < cart.length; i+=1){
+                  if (cart[i].name === name){
+                      cart[i].sold=true;
+                  }
+              }
+          
+             showItems();
+            showLeftItems();
+            showBoughtItems();
+            return;
+            
+        }
+//---------------------show not purchased goods------------------------------
+    function  notPurchasedItem(name){
+        for(let i=0; i < cart.length; i+=1){
+                  if (cart[i].name === name){
+                      cart[i].sold=false;
+                  }
+              }
+          
+             showItems();
+        showLeftItems();
+        showBoughtItems();
+            return;
+            
+    }
+//------------------show left to buy items----------------------------------
+        function showLeftItems(){
+            let itemStr = '';
+            for(let i=0; i<cart.length; i+=1){
+            if(cart[i].sold===false){
+                 const {name,  qty} = cart[i];
+                itemStr+=`<li> <span class="product-item">${name } <span class="amount"> ${qty}</span></span> </li>`  
+            }
+        }
+            leftToBuyList.innerHTML = itemStr;
+            
+        }
+//------------------show left to buy items----------------------------------
+        function showBoughtItems(){
+            let itemStr = '';
+            for(let i=0; i<cart.length; i+=1){
+            if(cart[i].sold===true){
+                 const {name,  qty} = cart[i];
+                itemStr+=`<li><span class="product-item"><label class="strikethroughText">${name }</label>  <span class="amount"> ${qty}</span></span> </li>`  
+            }
+        }
+            BoughtList.innerHTML = itemStr;
+            
+        }
+//--------------------------------------------------------------------------
+        
+        
+        addItem('Помідори')
+        addItem('Сир')
+        addItem('Печиво')
+         addItem('Помідори')
+        
+        showItems();
+        showLeftItems();
+        showBoughtItems();
+//--------------end of script ---------------------------------------------
+    </script>
+
+</body>
+</html>
