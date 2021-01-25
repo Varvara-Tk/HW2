@@ -61,7 +61,7 @@ body{
 
 input[type=text], select {
   float:left;
-  width: 81%;
+  width: calc(96% - 112px);
   height: 35px;
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
   margin: 8px 0;
@@ -72,16 +72,18 @@ input[type=text], select {
   border-bottom-left-radius: 4px;
   box-sizing: border-box;
   color: black;
+    
+   
 }
 
+
 button[type=submit] {
-    float:right;
+    float:left;
     height: 35px;
    background-color: #2185D0;
     color: #FFF;
-  width: 15%;
+  width: 112px;
   font-weight: bold;
- 
   margin: 8px 0;
      margin-right: 2%;
   border: none;
@@ -169,7 +171,7 @@ div.r {
     width:150px;
     margin-right: 2%;
     margin-top: 5px;
- 
+   
 }
 div.c {
     display:inline-flex;
@@ -256,7 +258,7 @@ div.l{
 #boughtList li{
     display: inline-block;
     padding: 5px;
-    margin-bottom: 12px;
+     margin-bottom: 12px;
 }
 
 .product-item {
@@ -322,17 +324,7 @@ div.l{
 }
 
 
-@media only screen and (max-width: 757px) 	{
-    input[type=text], select {
-        width: 71%;
-        transition:	all	0.25s	ease;
-}
 
-button[type=submit] {
-  width: 25%;
-    transition:	all	0.25s	ease;
-}
-}
 
 .tooltip {
     position: relative;
@@ -364,6 +356,5 @@ button[type=submit] {
     font-size: 12px;
     transform: scaleX(1);
 }
-
 
 
