@@ -57,10 +57,7 @@ $(document).ready(function () {
             
         });
        
-        function updateValue() {
-    var idOfProduct = "#" + $(this).parent().parent().find(".bl-pr").text();
-    $(idOfProduct).find(".bl-product").text($(this).val());
-    $(idOfProduct + "bl-bought").find(".bl-product").text($(this).val());
+       
 }
 //---------------Remove all-----------------------------
         node.find(".bl-cancel").click(function () {
