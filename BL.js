@@ -58,7 +58,6 @@ $(document).ready(function () {
         });
        
        
-}
 //---------------Remove all-----------------------------
         node.find(".bl-cancel").click(function () {
             node.slideUp(function () {
